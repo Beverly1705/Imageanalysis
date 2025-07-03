@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload a Face Image</h1>
+
+        <form action="/" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+            <input type="file" name="file" required>
+            <input type="submit" value="Predict">
+        </form>
+
+        <div id="loading" style="display: none;">⏳ Predicting... please wait.</div>
+
+        {% if result %}
+            <p class="prediction"><strong>Prediction:</strong> {{ result }}</p>
+        {% endif %}
+        {% if filename %}
+    <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Face" style="margin-top: 20px; max-width: 100%; border-radius: 8px;">
+{% endif %}
+        {% if class_names %}
+            <p class="known-classes"><strong>Model Can Recognize:</strong></p>
+            <ul>
+                {% for name in class_names %}
+                    <li>{{ name }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
